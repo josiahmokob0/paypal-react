@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ReactDOM from "react-dom";
 
-function App() {
+const paypal = window.paypal;
+
+const PayPalButton = paypal?.Buttons.driver("react", { React, ReactDOM });
+
+function YourComponent() {
+  const createOrder = (data, actions) =>
+    actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: "100",
+          },
+        },
+      ],
+    });
+
+  const onApprove = (data, actions) => {
+    alert("success");
+    return actions.order.capture();
+  };
+  const onError = (data, actions) => actions.order.capture();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ width: "50%" }}>
+      <PayPalButton
+        createOrder={(data, actions) => createOrder(data, actions)}
+        onApprove={(data, actions) => onApprove(data, actions)}
+        onError={(error) => onError(error)}
+      />
     </div>
   );
 }
 
-export default App;
+export default YourComponent;
