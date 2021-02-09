@@ -21,16 +21,17 @@ function YourComponent() {
     alert("success");
     return actions.order.capture();
   };
-  const onError = (data, actions) => actions.order.capture();
+
+  const onError = (error) => {
+    alert(error);
+  };
 
   return (
-    <div style={{ width: "50%" }}>
-      <PayPalButton
-        createOrder={(data, actions) => createOrder(data, actions)}
-        onApprove={(data, actions) => onApprove(data, actions)}
-        onError={(error) => onError(error)}
-      />
-    </div>
+    <PayPalButton
+      createOrder={(data, actions) => createOrder(data, actions)}
+      onApprove={(data, actions) => onApprove(data, actions)}
+      onError={(error) => onError(error)}
+    />
   );
 }
 
